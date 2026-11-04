@@ -1,0 +1,61 @@
+# ============================================================================
+# 广告物料订单管理系统 · 应用配置
+# ============================================================================
+server:
+  address: 0.0.0.0
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: ad-material
+
+  # ---------- 数据源 ----------
+  datasource:
+    # 课程 demo 默认用本地 MySQL 8.0；按实际环境修改
+    url: jdbc:mysql://localhost:3306/ad_material?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
+    username: root
+    password: 1802787400
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # 启动时自动执行 schema.sql（Spring Boot 3 写法）
+  sql:
+    init:
+      mode: never                      # 首次执行后关闭，避免重启清库
+      schema-locations: classpath:schema.sql
+      encoding: utf-8
+
+  # ---------- Jackson 日期格式 ----------
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    serialization:
+      write-dates-as-timestamps: false
+
+# ---------- MyBatis-Plus ----------
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true   # 下划线自动转驼峰
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # SQL 日志（开发时开）
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto                      # 主键自增
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# ---------- 日志 ----------
+logging:
+  level:
+    com.admaterial: debug
+    com.baomidou.mybatisplus: info
+
+# ---------- 文件上传（设计稿） ----------
+admaterial:
+  upload:
+    dir: D:/swapplatform/ad/uploads                       # 设计稿存储目录
+    max-size-mb: 20                      # 单文件上限
+    allowed-extensions: png,jpg,jpeg,pdf,ai,psd,webp,gif
